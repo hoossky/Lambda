@@ -5,7 +5,6 @@ const state = {
     context : 'http://localhost:5000/',
     soccer : []
 
-
 }
 
 const actions = {
@@ -14,12 +13,13 @@ const actions = {
         axios.get(state.context+"soccer/"+searchWord)
             .then(({data})=>{
                 commit('SEARCH',data)
-                router.push("/Home");
+                router.push("/");
 
             })
             .catch(()=>{
                 alert('축구 통신 실패!')
             })
+
     }
 
 }

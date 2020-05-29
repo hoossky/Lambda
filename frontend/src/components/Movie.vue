@@ -11,20 +11,15 @@
             <template v-slot:default>
                 <thead>
                 <tr>
-                    <th class="text-left">No.</th>
+                    <th class="text-left">순 위</th>
                     <th class="text-left">제 목</th>
-                    <th class="text-left">가 수</th>
-                    <th class="text-left">앨 범</th>
-                    <th class="text-left">이미지</th>
+
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="item of bugsmusic" :key="item.seq">
+                <tr v-for="item of naverMovie" :key="item.seq">
                     <td>{{ item.seq }}</td>
                     <td>{{ item.title }}</td>
-                    <td>{{ item.artist }}</td>
-                    <td>{{ item.album }}</td>
-                    <td><img :src="item.thumbnail"></td>
                 </tr>
                 </tbody>
             </template>
@@ -52,15 +47,16 @@
         computed : {
             ...mapState({
 
-                count : state => state.crawling.count,
-                bugsmusic: state => state.crawling.bugsmusic
+                count : state => state.movie.count,
+                naverMovie: state => state.movie.naverMovie
+
             })
         },
         methods:{
 
             search(){
                 alert('search')
-                this.$store.dispatch('crawling/search',this.searchWord)
+                this.$store.dispatch('movie/search',this.searchWord)
 
 
             }
@@ -94,11 +90,5 @@
         left: 200px;
         top: 100px;
     }
-    .text-left{
-
-
-
-    }
-
 
 </style>

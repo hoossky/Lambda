@@ -1,7 +1,9 @@
 package com.lambda.web.proxy;
 
+import com.lambda.web.movie.Movie;
 import com.lambda.web.music.Music;
 import com.lambda.web.music.MusicRepository;
+import com.lambda.web.movie.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +19,25 @@ public class ProxyController {
     @Autowired FileUploader uploader;
     @Autowired Proxy pxy;
     @Autowired MusicRepository musicRepository;
+    @Autowired MovieRepository movieRepository;
     //@Autowired FileUploader loader;
+
+    @GetMapping("naver-movie/{searchWord}")
+    public void naverMovie(@PathVariable String searchWord){
+        pxy.print("넘어온 거 : "+searchWord);
+        crawler.naverMovie();
+    }
+
+    /*public HashMap<String, Object> movie(@PathVariable String searchWord){
+        pxy.print("넘어온 키워드:"+ searchWord);
+        box.clear();
+        if(movieRepository.count() == 0) crawler.naverMovie();
+        List<Music> list = musicRepository.findAll();
+        pxy.print("count : "+list.size());
+        box.put("list",list);
+        box.put("count", list.size());
+        return box.get();
+    }*/
 
     @PostMapping("/bugsmusic")
     public HashMap<String, Object> bugsmusic(@RequestBody String searchWord){
@@ -37,4 +57,6 @@ public class ProxyController {
         uploader.upload();
         return null;
     }
+
+
 }

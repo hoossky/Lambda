@@ -9,16 +9,11 @@ const state = {
 const actions = {
     async search({commit}, searchWord){
         alert('검색 : '+searchWord)
-        axios.get(state.context+'naverMovie',searchWord,{
-            authorization: 'JWT fefege..',
-            Accept : 'application/json',
-            'Content-Type': 'application/json'
-        })
+        axios.get(state.context+"movie/"+searchWord)
             .then(({data})=>{
-            commit('SEARCH',data)
-            router.push("/retrimovie")
-                alert("성공")
-        })
+                commit('SEARCH',data)
+                router.push("/movie");
+            })
             .catch(()=>{
                 alert('실패!')
             })
@@ -49,7 +44,7 @@ const getters = {
 }
 
 export default {
-    name : 'movie',
+    name : "movie",
     namespaced : true,
     state,
     actions,

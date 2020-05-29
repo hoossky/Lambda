@@ -4,24 +4,47 @@ import router from '../router'
 const state = {
     context : 'http://localhost:5000/',
     bugsmusic : [],
+    naverMovie : [],
     count : 0
 }
 
 const actions = {
+    //'search'=>(){} Json'
     async search({commit}, searchWord){
         alert('검색어: '+searchWord)
-        axios.post(state.context+`bugsmusic`,searchWord,{
-            authorization: 'JWT fefege..',
-            Accept : 'application/json',
-            'Content-Type': 'application/json'
-        })
-            .then(({data})=>{
-                commit('SEARCH',data)
-                router.push("/retrieve")
-            })
-            .catch(()=>{
-                alert('통신 실패 !')
-            })
+
+        switch (searchWord) {
+            case '벅스' :
+                axios.post(state.context+`bugsmusic`,searchWord,{
+                    authorization: 'JWT fefege..',
+                    Accept : 'application/json',
+                    'Content-Type': 'application/json'
+                })
+                    .then(({data})=>{
+                        commit('SEARCH',data)
+                        router.push("/retrieve")
+                    })
+                    .catch(()=>{
+                        alert('통신 실패 !')
+                    })
+                    break
+
+            case '네이버 영화' :
+                axios.get(state.context+`naver-movie/${searchWord}`)
+                    .then(({data})=>{
+                        commit('SEARCH',data)
+                        router.push("/movie")
+                    })
+                    .catch(()=>{
+                        alert("실 패 !")
+                    })
+                    break
+
+        }
+
+
+
+
     }
 }
 

@@ -5,32 +5,42 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
-@Entity(name="movie")
+@Entity
 @Component
 public class Movie {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long movieNo;
-    @Column(length = 4, nullable = false)
-    private String seq;
-    @Column(length = 100, nullable = false)
+    private Long movieSeq;
+    @Column(length = 4)
+    private String rank;
+    @Column(length = 100)
     private String title;
+    @Column(length = 10)
+    private String rankDate;
 
     public Movie(){}
 
-    public Long getMovieNo() {
-        return movieNo;
+    public Long getMovieSeq() {
+        return movieSeq;
     }
 
-    public void setMovieNo(Long movieNo) {
-        this.movieNo = movieNo;
+    public String getRankDate() {
+        return rankDate;
     }
 
-    public String getSeq() {
-        return seq;
+    public void setRankDate(String rankDate) {
+        this.rankDate = rankDate;
     }
 
-    public void setSeq(String seq) {
-        this.seq = seq;
+    public void setMovieSeq(Long movieNo) {
+        this.movieSeq = movieSeq;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public void setRank(String seq) {
+        this.rank = seq;
     }
 
     public String getTitle() {
@@ -42,8 +52,11 @@ public class Movie {
     }
 
     @Builder
-    public Movie(String seq, String title){
-        this.seq = seq;
+    public Movie(String rank, String title, String rankDate){
+        this.rank = rank;
         this.title = title;
+        this.rankDate = rankDate;
     }
+
+
 }

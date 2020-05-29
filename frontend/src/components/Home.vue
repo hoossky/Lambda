@@ -5,9 +5,9 @@
             <br><br>
           <input type="text" @keyup.enter="search" v-model="searchWord" class="search" placeholder="Google 검색 또는 URL 입력">
             <br><br>
-        <div>
+        <!--<div>
             <h3>검색된 수 : {{count}}</h3>
-        </div>
+        </div>-->
 
         <!--<div class="text-center">
             <v-pagination
@@ -40,7 +40,7 @@
 
           }else if(this.searchWord === '네이버 영화'){
 
-              this.$store.dispatch('movie/search', this.searchWord);
+              this.$store.dispatch('crawling/search', this.searchWord);
           }else{
               alert('검색어를 확인해주세요')
           }
