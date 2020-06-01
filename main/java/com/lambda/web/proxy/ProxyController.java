@@ -1,13 +1,11 @@
 package com.lambda.web.proxy;
 
-import com.lambda.web.movie.Movie;
 import com.lambda.web.music.Music;
 import com.lambda.web.music.MusicRepository;
-import com.lambda.web.movie.MovieRepository;
+import com.lambda.web.music.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

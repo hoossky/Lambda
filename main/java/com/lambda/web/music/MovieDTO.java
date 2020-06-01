@@ -1,4 +1,4 @@
-package com.lambda.web.movie;
+package com.lambda.web.music;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
@@ -7,4 +7,5 @@ import org.springframework.stereotype.Component;
 @Component
 public class MovieDTO {
     private String movieSeq, rank, title, rankDate;
+
 }

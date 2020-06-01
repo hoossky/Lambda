@@ -1,4 +1,4 @@
-package com.lambda.web.movie;
+package com.lambda.web.music;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

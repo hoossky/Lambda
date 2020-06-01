@@ -11,15 +11,20 @@
             <template v-slot:default>
                 <thead>
                 <tr>
+                    <th class="text-left">No.</th>
                     <th class="text-left">순 위</th>
                     <th class="text-left">제 목</th>
+                    <th class="text-left">날 짜</th>
 
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="item of naverMovie" :key="item.seq">
-                    <td>{{ item.seq }}</td>
+                <tr v-for="item of naverMovie" :key="item.movieSeq">
+                    <td>{{ item.movieSeq }}</td>
+                    <td>{{ item.rank }}</td>
                     <td>{{ item.title }}</td>
+                    <td>{{ item.rankDate }}</td>
+
                 </tr>
                 </tbody>
             </template>
@@ -47,16 +52,15 @@
         computed : {
             ...mapState({
 
-                count : state => state.movie.count,
-                naverMovie: state => state.movie.naverMovie
-
+                count : state => state.crawling.count,
+                naverMovie: state => state.crawling.naverMovie
             })
         },
         methods:{
 
             search(){
                 alert('search')
-                this.$store.dispatch('movie/search',this.searchWord)
+                this.$store.dispatch('crawling/search',this.searchWord)
 
 
             }
@@ -90,5 +94,11 @@
         left: 200px;
         top: 100px;
     }
+    .text-left{
+
+
+
+    }
+
 
 </style>

@@ -11,7 +11,7 @@ const state = {
 const actions = {
     //'search'=>(){} Json'
     async search({commit}, searchWord){
-        alert('검색어: '+searchWord)
+        alert('검색어1 : '+searchWord)
 
         switch (searchWord) {
             case '벅스' :
@@ -30,48 +30,54 @@ const actions = {
                     break
 
             case '네이버 영화' :
-                axios.get(state.context+`naver-movie/${searchWord}`)
+                alert("검색어2 : " + searchWord);
+                axios
+                    .get(state.context+`movie/list/0/${searchWord}`)
                     .then(({data})=>{
-                        commit('SEARCH',data)
+                        commit('MOVIE',data)
                         router.push("/movie")
                     })
                     .catch(()=>{
-                        alert("실 패 !")
+                        alert("영화 통신 실패!");
                     })
-                    break
-
         }
-
-
-
 
     }
 }
 
 const mutations = {
-    SEARCH(state, data){
-        alert('mutation 검색된 결과 수 : '+data.count)
+    SEARCH(state, data) {
+        alert('mutation 검색된 결과 수 : ' + data.count)
         state.bugsmusic = [] //new
         state.count = data.count
         data.list.forEach(item => {
             state.bugsmusic.push({
-                seq : item.seq,
-                artist :item.artist,
-                title : item.title,
-                album : item.album,
-                thumbnail : item.thumbnail
+                seq: item.seq,
+                artist: item.artist,
+                title: item.title,
+                album: item.album,
+                thumbnail: item.thumbnail
             })
         })
-        /*data.forEach( item =>{
-            alert(item)
-            state.bugsmusic.push([])
-        })*/
-
+    },
+    MOVIE(state,data){
+        alert('mutation movie : '+ data.count)
+        state.naverMovie = []
+        state.count = data.count
+        data.list.forEach(item => {
+            state.naverMovie.push({
+                moveSeq : item.moveSeq,
+                rank : item.rank,
+                title : item.title,
+                rankDate : item.rankDate
+            })
+        })
     }
 }
 
 const getters = {
     bugsmusic : state => state.bugsmusic, // 스테이트의 벅스뮤직을 리턴
+    naverMovie : state => state.naverMovie,
     count : state => state.count
 }
 
