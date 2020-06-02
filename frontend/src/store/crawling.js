@@ -38,7 +38,7 @@ const actions = {
                         router.push("/movie")
                     })
                     .catch(()=>{
-                        alert("영화 통신 실패!");
+                        alert(" 실패!");
                     })
         }
 
@@ -60,19 +60,7 @@ const mutations = {
             })
         })
     },
-    MOVIE(state,data){
-        alert('mutation movie : '+ data.count)
-        state.naverMovie = []
-        state.count = data.count
-        data.list.forEach(item => {
-            state.naverMovie.push({
-                movieSeq : item.movieSeq,
-                rank : item.rank,
-                title : item.title,
-                rankDate : item.rankDate
-            })
-        })
-    }
+
 }
 
 const getters = {

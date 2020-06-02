@@ -27,27 +27,12 @@
         }
     },
     created() {
-            alert("Created execute at home")
     },
-    methods:{
-      search(){
-          alert(this.searchWord)
-          /*this.$store.dispatch('crawling/search',this.searchWord)*/
-          if(this.searchWord === '벅스'){
+    methods: {
+        search(){
+            this.$store.dispatch('search/find', this.searchWord)
 
-              this.$store.dispatch('crawling/search',this.searchWord);
-
-          }else if(this.searchWord === '축구'){
-
-              this.$store.dispatch('soccer/search', this.searchWord);
-
-          }else if(this.searchWord === '네이버 영화'){
-
-              this.$store.dispatch('crawling/search', this.searchWord);
-          }else{
-              alert('검색어를 확인해주세요')
-          }
-      }
+        }
     }
   }
 </script>
