@@ -66,7 +66,7 @@ const mutations = {
         state.count = data.count
         data.list.forEach(item => {
             state.naverMovie.push({
-                moveSeq : item.moveSeq,
+                movieSeq : item.movieSeq,
                 rank : item.rank,
                 title : item.title,
                 rankDate : item.rankDate

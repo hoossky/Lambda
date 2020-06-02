@@ -26,6 +26,9 @@
             searchWord : ''
         }
     },
+    created() {
+            alert("Created execute at home")
+    },
     methods:{
       search(){
           alert(this.searchWord)
