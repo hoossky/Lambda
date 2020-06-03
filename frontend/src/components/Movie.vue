@@ -1,12 +1,9 @@
 <template>
     <div>
         <img class="logo" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png">
-        <br><br>
-        <input type="text" @keyup.enter="search" v-model="searchWord" class="search" placeholder="검색된 결과">
-
-        <div class="count-text">
-            <h3>총 게시글수 : {{pager.rowCount}}</h3>
-        </div>
+        <!--<input type="text" @keyup.enter="search" v-model="searchWord" class="search" placeholder="검색된 결과">-->
+        <h3>총 게시글수 : {{pager.rowCount}}</h3>
+        <a @click="myAlert('aaaa')">테스트</a>
         <v-simple-table>
             <template v-slot:default>
                 <thead>
@@ -31,7 +28,7 @@
         <div class="text-center">
             <div style="margin: 0 auto; width: 250px; height: 100px"></div>
             <span v-if="pager.existPrev" style="width: 50px; height: 50px; border: 1px solid #000000; margin: 5px">이 전</span>
-            <span v-for="i of pages" :key="i" style="width: 50px; height: 50px; border: 1px solid black; margin: 5px">
+            <span @click="transferPage(i)" v-for="i of pages" :key="i" style="width: 50px; height: 50px; border: 1px solid black; margin: 5px">
                 {{i}}
             </span>
             <span v-if="pager.existNext" style="width: 50px; height: 50px; border: 1px solid black; margin: 5px">다 음</span>
@@ -43,57 +40,32 @@
 
 <script>
     import {mapState} from 'vuex'
-    import axios from "axios";
+    import {proxy} from "./mixins/proxy"
     export default {
-
+        mixins : [proxy],
         data(){
-            return {
-                pageNumber: 0,
-                existPrev : false,
-                existNext : true,
-                pages: [1,2,3,4,5],
-                list: [],
-                pager: {},
-                totalCount: '',
-                searchWord : ''
-
-            }
+            return {}
         },
         computed : {
             ...mapState({
-
-                count : state => state.crawling.count,
-                naverMovie : state => state.crawling.naverMovie
+                list : state => state.search.list,
+                pages : state => state.search.pages,
+                pager: state => state.search.pager
             })
         },
         created() {
-                axios
-                    .get(`${this.$store.state.search.context}/movies/${this.$store.state.search.searchWord}/${this.$store.state.search.pageNumber}`)
-                    .then(res =>{
-                        res.data.list.forEach(elem => {this.list.push(elem)})
-                        this.pager = res.data.pager
-                        let i = this.pager.startPage + 1
-                        let arr = []
-                        console.log(`페이지 끝 : ${this.pager.endPage}`)
-
-                        for(; i <= this.pager.endPage + 1; i++){
-                            arr.push(i)
-                        }
-                        this.pages = arr
-
-                    })
-                    .catch(err=>{
-                        alert(`영화 통신 실패! ${err}`)
-                    })
-
+            let json = proxy.methods.paging(`${this.$store.state.search.context}/movies/null/0`)
+            this.$store.state.search.list = json.movies
+            this.$store.state.search.pages = json.pages
+            this.$store.state.search.pager = json.temp
         },
         methods:{
-
-            search(){
-                alert('search')
-                this.$store.dispatch('crawling/search',this.searchWord)
-
-            },
+            transferPage(d){
+                alert(`이동 페이지 ${d}`)
+                this.$store.dispatch('search/transferPage',{category : 'movies',
+                                                                        searchWord : 'null',
+                                                                        pageNumber : Number(d)-1})
+            }
 
         }
     }

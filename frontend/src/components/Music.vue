@@ -1,12 +1,7 @@
 <template>
     <div>
         <img class="logo" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png">
-        <br><br>
-        <input type="text" @keyup.enter="search" v-model="searchWord" class="search" placeholder="검색된 결과">
-
-        <div class="count-text">
-            <h4>검색 결과 : {{count}}</h4>
-        </div>
+            <h4>검색 결과 : {{pager.rowCount}}</h4>
         <v-simple-table>
             <template v-slot:default>
                 <thead>
@@ -32,7 +27,7 @@
         <div class="text-center">
             <div style="margin: 0 auto; width: 250px; height: 100px"></div>
             <span v-if="pager.existPrev" style="width: 50px; height: 50px; border: 1px solid #000000; margin: 5px">이 전</span>
-            <span v-for="i of pages" :key="i" style="width: 50px; height: 50px; border: 1px solid black; margin: 5px">
+            <span @click="transferPage(i)" v-for="i of pages" :key="i" style="width: 50px; height: 50px; border: 1px solid black; margin: 5px">
                 {{i}}
             </span>
             <span v-if="pager.existNext" style="width: 50px; height: 50px; border: 1px solid black; margin: 5px">다 음</span>
@@ -51,48 +46,24 @@
 <script>
     import {mapState} from 'vuex'
     import axios from "axios";
+    //import axios from "axios";
     export default {
         data(){
-            return {
-                pageNumber: 0,
-                existPrev : false,
-                existNext : true,
-                pages: [1,2,3,4,5],
-                list: [],
-                pager: {},
-                totalCount: '',
-                searchWord : ''
-
-            }
+            return {}
 
         },
         computed : {
             ...mapState({
-
-                count : state => state.crawling.count,
-                bugsmusic: state => state.crawling.bugsmusic
+                list : state => state.search.list,
+                pages : state => state.search.pages,
+                pager: state => state.search.pager
             })
         },
         created() {
-            axios
-                .get(`${this.$store.state.search.context}/musics/${this.$store.state.search.searchWord}/${this.$store.state.search.pageNumber}`)
-                .then(res =>{
-                    res.data.list.forEach(elem => {this.list.push(elem)})
-                    this.pager = res.data.pager
-                    let i = this.pager.startPage + 1
-                    let arr = []
-                    console.log(`페이지 끝 : ${this.pager.endPage}`)
-
-                    for(; i <= this.pager.endPage + 1;i++){
-                        arr.push(i)
-                    }
-                    this.pages = arr
-
-                })
-                .catch(err=>{
-                    alert(`음악 통신 실패! ${err}`)
-                })
-
+            let json = paging(`${this.$store.state.search.context}/movies/null/0`)
+            this.$store.state.search.list = json.movies
+            this.$store.state.search.pages = json.pages
+            this.$store.state.search.pager = json.temp
         },
         methods:{
 
@@ -103,6 +74,39 @@
 
             }
         }
+
+    }
+    function paging(d) {
+        const movies = []
+        const pages = []
+        let temp = {}
+
+        axios
+            .get(d)
+            .then(({data}) => { //res (es5) = {data} (es6)
+                data.list.forEach(elem => {
+                    movies.push(elem)
+                })
+                console.log('페이징 메소드 : ' + data.pager.pageSize)
+                let pager = data.pager
+                alert(">>" + pager.rowCount)
+                let i = pager.startPage + 1
+
+                console.log(`페이지 끝 : ${pager.endPage + 1}`)
+
+                for (; i <= pager.endPage + 1; i++) {
+                    pages.push(i)
+                }
+                temp.rowCount = pager.rowCount
+                temp.existPrev = pager.existPrev
+                temp.existNext = pager.existNext
+
+            })
+            .catch(err => {
+                alert(`영화 통신 실패! ${err}`)
+            })
+
+        return {movies, pages, temp}
     }
 </script>
 

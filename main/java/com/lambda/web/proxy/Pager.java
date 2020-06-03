@@ -20,7 +20,7 @@ public class Pager {
         // rowCount가 나누어 떨어지지 않을때
         rowCount = movieMapper.count();
         startRow = nowPage * pageSize;
-        endRow = (nowPage != (pageCount - 1)) ? startRow = (pageSize -1) : rowCount -1;
+        endRow = (nowPage != (pageCount - 1)) ? startRow + (pageSize -1) : rowCount -1;
         pageCount = (rowCount % pageSize != 0) ? rowCount / pageSize + 1 : rowCount / pageSize;
         startPage = nowBlock * blockSize;
         endPage = (nowBlock != (blockCount - 1)) ? startPage + (blockSize - 1) : pageCount - 1;

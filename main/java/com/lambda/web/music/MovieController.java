@@ -29,7 +29,10 @@ public class MovieController{
             pxy.print("검색어3 : "+searchWord);
         }
 
-        pager.setNowPage(pxy.integer(pageNumber));
+        pxy.print("넘어온 페이지 번호 : " + pageNumber);
+
+        pager.setNowPage(pxy.integer(pageNumber))
+        ;
         pager.setBlockSize(5);
         pager.setPageSize(5);
         pager.paging();

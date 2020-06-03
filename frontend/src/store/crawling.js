@@ -22,7 +22,7 @@ const actions = {
                 })
                     .then(({data})=>{
                         commit('SEARCH',data)
-                        router.push("/retrieve")
+                        router.push("/music")
                     })
                     .catch(()=>{
                         alert('통신 실패 !')
