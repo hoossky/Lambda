@@ -14,7 +14,7 @@ public class Pager {
 
     public boolean existPrev, existNext;
 
-    private String search;
+    private String searchWord;
 
     public void paging(){ //db에 있는 count를 가져온다
         // rowCount가 나누어 떨어지지 않을때

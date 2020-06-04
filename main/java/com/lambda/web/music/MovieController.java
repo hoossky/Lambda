@@ -6,6 +6,7 @@ import com.lambda.web.proxy.IFunction;
 import com.lambda.web.proxy.Pager;
 import com.lambda.web.proxy.Proxy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.internal.Function;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,10 +24,12 @@ public class MovieController{
     public Map<?, ?> list(@PathVariable("pageNumber") String pageNumber,
                                     @PathVariable("searchWord") String searchWord){
 
-        if(searchWord.equals("")){
+        if(searchWord.equals("null")){
             pxy.print("검색어가 없음");
+            pager.setSearchWord("");
         }else{
             pxy.print("검색어3 : "+searchWord);
+            pager.setSearchWord(searchWord);
         }
 
         pxy.print("넘어온 페이지 번호 : " + pageNumber);
@@ -35,8 +38,9 @@ public class MovieController{
         ;
         pager.setBlockSize(5);
         pager.setPageSize(5);
+
         pager.paging();
-        IFunction<Pager, List<MovieDTO>> f = p ->  movieMapper.selectMovies(p);
+        IFunction<Pager, List<MovieDTO>> f = p -> movieMapper.selectMovies(p);
         List<MovieDTO> l = f.apply(pager);
         pxy.print("------------");
         for(MovieDTO m : l){
@@ -48,4 +52,9 @@ public class MovieController{
 
         return box.get();
     }
+    @GetMapping("/{searchWord}")
+    public MovieDTO detail(@PathVariable("searchWord") String searchWord){
+        return movieMapper.selectMovie(searchWord);
+    }
+
 }

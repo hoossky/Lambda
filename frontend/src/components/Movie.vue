@@ -1,9 +1,12 @@
 <template>
     <div>
         <img class="logo" src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png">
-        <!--<input type="text" @keyup.enter="search" v-model="searchWord" class="search" placeholder="검색된 결과">-->
+        <span style="float:right; margin-right: 50px; margin-top: 50px"><input id="searchWord" type="text" @keyup.enter="search" class="search">
+            <button @click="retrieve">검색</button>
+            </span>
         <h3>총 게시글수 : {{pager.rowCount}}</h3>
-        <a @click="myAlert('aaaa')">테스트</a>
+        <br>
+        <a @click="tester('aaaa')">테스트</a>
         <v-simple-table>
             <template v-slot:default>
                 <thead>
@@ -12,14 +15,13 @@
                     <th class="text-left">순 위</th>
                     <th class="text-left">제 목</th>
                     <th class="text-left">집계일</th>
-
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="item of list" :key="item.movieSeq">
                     <td>{{item.movieSeq}}</td>
                     <td>{{item.rank}}</td>
-                    <td>{{item.title}}</td>
+                    <td><a @click="retrieveOne(item.movieSeq)" href="#">{{item.title}}</a></td>
                     <td>{{item.rankDate}}</td>
                 </tr>
                 </tbody>
@@ -27,11 +29,11 @@
         </v-simple-table>
         <div class="text-center">
             <div style="margin: 0 auto; width: 250px; height: 100px"></div>
-            <span v-if="pager.existPrev" style="width: 50px; height: 50px; border: 1px solid #000000; margin: 5px">이 전</span>
-            <span @click="transferPage(i)" v-for="i of pages" :key="i" style="width: 50px; height: 50px; border: 1px solid black; margin: 5px">
+            <span @click="transferPage(pager.preBlock)" v-if="pager.existPrev" style="width: 50px; height: 50px; border: 1px solid #000000; margin: 5px">이 전</span>
+            <span @click="transferPage(i-1)" v-for="i of pages" :key="i" style="width: 50px; height: 50px; border: 1px solid black; margin: 5px">
                 {{i}}
             </span>
-            <span v-if="pager.existNext" style="width: 50px; height: 50px; border: 1px solid black; margin: 5px">다 음</span>
+            <span @click="transferPage(pager.nextBlock)" v-if="pager.existNext" style="width: 50px; height: 50px; border: 1px solid black; margin: 5px">다 음</span>
             <!--<v-pagination v-model="page" :length="5"></v-pagination>-->
 
         </div>
@@ -61,13 +63,25 @@
         },
         methods:{
             transferPage(d){
-                alert(`이동 페이지 ${d}`)
+                proxy.methods.tester(d)
                 this.$store.dispatch('search/transferPage',{category : 'movies',
                                                                         searchWord : 'null',
-                                                                        pageNumber : Number(d)-1})
-            }
+                                                                        pageNumber : d}) //Number(d)
+            },
+            retrieve(){
+                //proxy.methods.tester(document.getElementById('searchWord').value) // DOM처리 value() 함수처리
+                let searchWord = document.getElementById('searchWord').value
+                if(searchWord === '') searchWord = 'null'
+                this.$store.dispatch('search/transferPage', {category : 'movies',
+                                                                      searchWord : searchWord,
+                                                                      pageNumber : 0})
 
-        }
+            },
+            retrieveOne(movieSeq){
+                this.$store.dispatch('search/retrieveOne',{category:'movies' ,
+                    searchWord:movieSeq})
+            }
+     }
     }
 </script>
 
@@ -79,7 +93,7 @@
         width: 100px;
         height: 40px;
     }
-    .search {
+    /*.search {
         width: 40%;
         padding: 12px 20px;
         position: absolute;
@@ -89,7 +103,7 @@
         display: inline-block;
         border: 1px solid #ccc;
         box-sizing: border-box;
-    }
+    }*/
     .count-text{
         position: absolute;
         left: 200px;

@@ -7,10 +7,12 @@ const state ={
     pageNumber: '0',
     list : [],
     pages : [],
-    pager: {}
+    pager: {},
+    item : {}
 
 }
 const actions ={
+
     async find({commit},searchWord){
         alert('>>> '+searchWord)
         commit("SEARCHWORD",searchWord)
@@ -22,8 +24,6 @@ const actions ={
             case '축구': router.push("/Soccer")
                 break
         }
-
-
     },
     async transferPage({commit},payload){
         alert(`${state.context}/${payload.category}/${payload.searchWord}/${payload.pageNumber}`)
@@ -32,32 +32,36 @@ const actions ={
             .then(({data})=>{
                 commit("TRANSFER",data)
             })
-            .catch({})
+            .catch()
+    },
+    async retrieveOne({commit}, payload){
+        axios
+            .get(`${state.context}/${payload.category}/${payload.searchWord}`)
+            .then(({data})=>{
+                commit("DETAIL",data)
+                router.push("/MovieDetail")
+            })
+            .catch()
     }
 
 
 }
 const mutations ={
-    MOVIE(state, data){
-        alert("영화 뮤테이션에서 결과 수 : " + data.count)
-        state.movies = []
-        state.pager = data.pager;
-        data.list.forEach(item => {
-            state.movies.push({
-                movieSeq: item.movieSeq,
-                rank: item.rank,
-                title: item.title,
-                rankDate: item.rankDate
-            });
-        });
-    },
+
     SEARCHWORD(state, data){
         state.searchWord = data
     },
     TRANSFER(state, data){
+        alert("뮤테이션")
         state.pager = data.pager
         state.list = data.list
+    },
+    DETAIL(state, data){
+        state.item = data
+
     }
+
+
 }
 
 export default {
