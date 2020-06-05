@@ -41,14 +41,14 @@ public class MovieController{
 
         pager.paging();
         IFunction<Pager, List<MovieDTO>> f = p -> movieMapper.selectMovies(p);
-        List<MovieDTO> l = f.apply(pager);
+        List<MovieDTO> list = f.apply(pager);
         pxy.print("------------");
-        for(MovieDTO m : l){
+        for(MovieDTO m : list){
             pxy.print(m.toString());
         }
         box.clear();
         box.put("pager", pager);
-        box.put("list", l);
+        box.put("list", list);
 
         return box.get();
     }

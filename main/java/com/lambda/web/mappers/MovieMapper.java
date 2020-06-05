@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface MovieMapper {
+    public int insertMovie(MovieDTO);
     public void insertMovie(MovieDTO movie);
     public void updateMovie(MovieDTO movie);
     public void deleteMovie(MovieDTO movie);
